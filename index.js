@@ -57,10 +57,16 @@ app.post('/tulipallvalue',async(req,res)=>{
     const result = await tulipdatacollection.insertOne(data);
     res.send(result)
 })
-// show the value in front end
+// show the value in front end 6
 app.get('/tulipallvalueGet',async(req,res)=>{
   const limit = 6;
     const data = await tulipdatacollection.find().limit(limit).toArray();
+    res.send(data)
+})
+// show all the value in front end 
+app.get('/tulipallvalueGetdata',async(req,res)=>{
+
+    const data = await tulipdatacollection.find().toArray();
     res.send(data)
 })
 // show data for specific id
