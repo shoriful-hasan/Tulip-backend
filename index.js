@@ -50,6 +50,57 @@ async function run() {
 // create a databasename and create a collection
 
 const tulipdatacollection = client.db('TulipAllData').collection('tulipsingle');
+const tulipdonation = client.db('TulipAllData').collection('tulipDonation');
+app.post('/tulipdonationdata',async(req,res)=>{
+  const data = req.body;
+  const result = await tulipdonation.insertOne(data);
+  res.send(result)
+})
+// tulip donation data get 
+app.get('/tulipdonationdataGet', async(req,res)=>{
+  const data = await tulipdonation.find().toArray();
+  res.send(data)
+})
+
+// tulip donation specific data show by id
+
+app.get('/tulipdonationdataGet/:id',async(req,res)=>{
+  const id = req.params.id;
+  const query = {_id: new ObjectId(id)};
+  const result = await tulipdonation.findOne(query);
+  res.send(result)
+})
+// tulip donation data delete 
+app.delete('/tulipdonationdataGet/:id',async(req,res)=>{
+  const id = req.params.id;
+  const query = {_id : new ObjectId(id)};
+  const result = await tulipdonation.deleteOne(query);
+  res.send(result)
+})
+// tulip donation data edit and update
+app.patch('/tulipdonationdataGet/:id',async(req,res)=>{
+const id = req.params.id;
+console.log(id);
+
+const data = req.body;
+console.log(data);
+
+const query = {_id : new ObjectId(id)}
+const update = {
+    $set : {
+      imageurL : data.imageurl,
+      campaignTitle : data.campaignTitle,
+      description : data.description,
+      datetime : data.datetime,
+
+    }
+  }
+
+const result = await tulipdonation.updateOne(query,update);
+console.log(result);
+
+res.send(result)
+})
 // this is post method for additem value in the front end
 app.post('/tulipallvalue',async(req,res)=>{
     const data = req.body;
@@ -76,6 +127,9 @@ app.get('/tulivalueid/:id',async(req,res)=>{
   const result = await tulipdatacollection.findOne(query);
   res.send(result)
 })
+
+
+
 
   } finally {
     // Ensures that the client will close when you finish/error
